@@ -1,35 +1,97 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { createElement, useState } from 'react';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function Header() {
+	return (
+		<header>
+			<h1>HEX Colors</h1>
+		</header>
+	)
 }
 
-export default App
+function Canvas({children, color}) {
+	return (
+		<section className="section">
+			{children}
+		</section>
+	)
+}
+
+function Sidebar({nodeX}) {
+	return (
+		<div className="sidebar">
+			{
+				nodeX.map(
+					node => 
+						<div>{node}</div>
+					)
+			}
+		</div>
+	)
+}
+
+function Content({color}) {
+	return (
+		<div className="content" style={{backgroundColor: color}}></div>
+	)
+}
+
+function Button({setColor, nodeX, setNodeX}) {
+
+	function generateColor() {
+		const characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+		
+		let colorCode = '#';
+
+		for (let i = 0; i < 6; i++) {
+			colorCode += characters[Math.floor(Math.random() * 15)];
+		}
+
+		setColor(colorCode);
+
+		let colectionX = nodeX;
+
+		let newNode = createElement(
+			'div',
+			{	className: 'small',
+				key: colorCode,
+				
+			},
+			createElement(
+				'div',
+				{
+					className: 'box',
+					style: {backgroundColor: colorCode}
+				}
+			),
+			createElement(
+				'div',
+				{className: 'text'},
+				colorCode,
+			)
+		);
+
+		colectionX.push(newNode);
+
+		setNodeX(colectionX);
+	}
+
+	return (
+		<button onClick={generateColor}>Generate Color</button>
+	)
+}
+
+export default function App() {
+	const [color, setColor] = useState('#999');
+	const [nodeX, setNodeX] = useState([]);
+	return (
+		<>
+			<Header />
+			<Canvas color={color}>
+				<Sidebar nodeX={nodeX} />
+				<Content color={color} />
+				<Button setColor={setColor} nodeX={nodeX} setNodeX={setNodeX} />
+			</Canvas>
+		</>
+	)
+}
