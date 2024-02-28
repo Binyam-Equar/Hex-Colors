@@ -4,7 +4,7 @@ import './App.css'
 function Header() {
 	return (
 		<header>
-			<h1>HEX Colors</h1>
+			<h1>Color Genarator</h1>
 		</header>
 	)
 }
@@ -36,7 +36,15 @@ function Content({color}) {
 	)
 }
 
-function Button({setColor, nodeX, setNodeX}) {
+function Button({onClick, className, children}) {
+	return (
+		<button onClick={onClick} className={className}>{children}</button>
+	)
+}
+
+function App() {
+	const [color, setColor] = useState('#999');
+	const [nodeX, setNodeX] = useState([]);
 
 	function generateColor() {
 		const characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
@@ -49,25 +57,28 @@ function Button({setColor, nodeX, setNodeX}) {
 
 		setColor(colorCode);
 
+	}
+
+	function addFavorite() {
 		let colectionX = nodeX;
 
 		let newNode = createElement(
 			'div',
 			{	className: 'small',
-				key: colorCode,
+				key: color,
 				
 			},
 			createElement(
 				'div',
 				{
 					className: 'box',
-					style: {backgroundColor: colorCode}
+					style: {backgroundColor: color}
 				}
 			),
 			createElement(
 				'div',
 				{className: 'text'},
-				colorCode,
+				color,
 			)
 		);
 
@@ -77,20 +88,13 @@ function Button({setColor, nodeX, setNodeX}) {
 	}
 
 	return (
-		<button onClick={generateColor}>Generate Color</button>
-	)
-}
-
-function App() {
-	const [color, setColor] = useState('#999');
-	const [nodeX, setNodeX] = useState([]);
-	return (
 		<>
 			<Header />
 			<Canvas color={color}>
 				<Sidebar nodeX={nodeX} />
 				<Content color={color} />
-				<Button setColor={setColor} nodeX={nodeX} setNodeX={setNodeX} />
+				<Button onClick={generateColor} className={"new"}>Generate Color</Button>
+				<Button onClick={addFavorite} className={"add"}>Add to Favorite</Button>
 			</Canvas>
 		</>
 	)
