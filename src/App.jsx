@@ -81,7 +81,7 @@ function Button({setColor, nodeX, setNodeX}) {
 	)
 }
 
-export default function App() {
+function App() {
 	const [color, setColor] = useState('#999');
 	const [nodeX, setNodeX] = useState([]);
 	return (
@@ -95,3 +95,5 @@ export default function App() {
 		</>
 	)
 }
+
+export default App
