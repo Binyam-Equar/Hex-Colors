@@ -9,7 +9,7 @@ function Header() {
 	)
 }
 
-function Canvas({children, color}) {
+function Canvas({children, color, nodeX}) {
 	return (
 		<section className="section">
 			{children}
@@ -17,17 +17,8 @@ function Canvas({children, color}) {
 	)
 }
 
-function Sidebar({nodeX}) {
-	return (
-		<div className="sidebar">
-			{
-				nodeX.map(
-					node => 
-						<div>{node}</div>
-					)
-			}
-		</div>
-	)
+function Sidebar({newChildren}) {
+	return (<div className="sidebar">{newChildren}</div>)
 }
 
 function Content({color}) {
@@ -45,6 +36,7 @@ function Button({onClick, className, children}) {
 function App() {
 	const [color, setColor] = useState('#999');
 	const [nodeX, setNodeX] = useState([]);
+	const [newChildren, setNewChildren] = useState('');
 
 	function generateColor() {
 		const characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
@@ -83,15 +75,21 @@ function App() {
 		);
 
 		colectionX.push(newNode);
-
+		
 		setNodeX(colectionX);
+		
+		setNewChildren(
+			nodeX.map(
+				node => <div>{node}</div>
+			)
+		);
 	}
 
 	return (
 		<>
 			<Header />
-			<Canvas color={color}>
-				<Sidebar nodeX={nodeX} />
+			<Canvas color={color} newChildren={newChildren}>
+				<Sidebar newChildren={newChildren} />
 				<Content color={color} />
 				<Button onClick={generateColor} className={"new"}>Generate Color</Button>
 				<Button onClick={addFavorite} className={"add"}>Add to Favorite</Button>
