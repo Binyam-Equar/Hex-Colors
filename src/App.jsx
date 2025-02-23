@@ -35,6 +35,7 @@ function Button({onClick, className, children}) {
 
 function App() {
 	const [color, setColor] = useState('#999');
+	const [allColors, setAllColors] = useState([]);
 	const [nodeX, setNodeX] = useState([]);
 	const [newChildren, setNewChildren] = useState('');
 
@@ -52,6 +53,7 @@ function App() {
 	}
 
 	function addFavorite() {
+		let colors = allColors;
 		let colectionX = nodeX;
 
 		let newNode = createElement(
@@ -74,7 +76,13 @@ function App() {
 			)
 		);
 
-		colectionX.push(newNode);
+		if (!colors.includes(color)) {
+			colors.push(color);
+
+			setAllColors(colors);
+
+			colectionX.push(newNode);
+		}
 		
 		setNodeX(colectionX);
 		
