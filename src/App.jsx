@@ -58,10 +58,7 @@ function App() {
 
 		let newNode = createElement(
 			'div',
-			{	className: 'small',
-				key: color,
-				
-			},
+			{className: 'small'},
 			createElement(
 				'div',
 				{
@@ -88,7 +85,7 @@ function App() {
 		
 		setNewChildren(
 			nodeX.map(
-				node => <div>{node}</div>
+				node => <div key={crypto.randomUUID()}>{node}</div>
 			)
 		);
 	}
